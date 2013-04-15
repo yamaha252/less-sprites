@@ -3,6 +3,11 @@
 ## Requirements
 `less-sprites` uses [*ImageMagick*](http://www.imagemagick.org/), so install it first. 
 
+## Installation
+```
+npm install less-sprites
+```
+
 ## Usage
 Write a list of source images into a `.json` file:
 `{ "files": ["icon1.png", "icon2.png"] }`
@@ -86,5 +91,5 @@ So if you have folder `icons/` with the sprite `icons/my-sprite.png`, then you c
 }
 ```
 
-### License
+## License
 The MIT License.
