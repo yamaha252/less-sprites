@@ -16,7 +16,7 @@ function Sprites() {
 	this.readArgs();
 }
 
-Sprites.prototype.createSprite = function(sourceDir, sourceFiles, spriteName) {
+Sprites.prototype.createSprite = function(sourceDir, sourceFiles, destPath, lessPath) {
 	var readDir = false;
 	if (sourceDir !== false) {
 		this.sourceDir = sourceDir;
@@ -34,8 +34,8 @@ Sprites.prototype.createSprite = function(sourceDir, sourceFiles, spriteName) {
 		}
 	}
 
-	this.destFile = path.basename(spriteName);
-	this.lessPath = this.sourceDir + '/' + path.basename(spriteName, '.png') + '.less';
+	this.destPath = path.resolve(destPath);
+	this.lessPath = path.resolve(lessPath);
 
 	this.files = [];
 	this.spriteFile = im();
@@ -48,7 +48,7 @@ Sprites.prototype.createSprite = function(sourceDir, sourceFiles, spriteName) {
 
 	this.combine(sourceFiles)
 		.then(function() {
-			this.spriteFile.write(this.sourceDir + '/' + this.destFile, function(err) {
+			this.spriteFile.write(this.destPath, function(err) {
 				if (err) throw err;
 			});
 			this.writeStyles();
@@ -61,7 +61,7 @@ Sprites.prototype.getSourceFiles = function(files) {
 
 	for (var i = 0, l = files.length; i < l; i++) {
 		file = path.basename(files[i]);
-		if (file.match(/.*\.png$/i) && file != this.destFile) {
+		if (file.match(/.*\.png$/i) && file != this.destPath) {
 			sourceFiles.push(file);
 		}
 	}
@@ -98,8 +98,8 @@ Sprites.prototype.processFile = function(fileName, callback) {
 };
 
 Sprites.prototype.writeStyles = function() {
-	var spriteFile = this.destFile;
-	var sprite = path.basename(this.destFile, '.png');
+	var relPath = path.relative(this.sourceDir, path.dirname(this.destPath));
+	var spriteFile = relPath + '/' + path.basename(this.destPath);
 	var content = '';
 	var x = 0;
 	var y = 0;
@@ -146,19 +146,36 @@ Sprites.prototype.readArgs = function() {
 	if (!specs['dir']) {
 		specs['dir'] = '.';
 	}
+
+ 	// default directory is same as the json
 	if (!specs['sprite']) {
 		specs['sprite'] = path.basename(specsFile, '.json') + '.png';
 	}
+	// relative to the specsFile directory.
+	if (specs['sprite'][0] != '/') {
+		specs['sprite'] = path.dirname(specsFile) + '/' + specs['sprite'];
+	}
+
+	if (!specs['less']) {
+		specs['less'] = path.basename(specsFile, '.json') + '.less';
+	}
+
+	if (specs['less'][0] != '/') {
+		specs['less'] = path.dirname(specsFile) + '/' + specs['less'];
+	}
+
 	if (!specs['files']) {
 		throw new Error('Missing "files" property.');
 	}
 	if (specs['direction']) {
-		this.specs.appendRight = specs['append'] == 'right';
+		this.specs.appendRight = specs['direction'] == 'right';
 	}
+
 	this.createSprite(
-		path.resolve(specsFile, '..', specs.dir),
-		specs.files,
-		specs.sprite
+		path.resolve(specsFile, '..', specs['dir']),
+		specs['files'],
+		specs['sprite'],
+		specs['less']
 	);
 };
 

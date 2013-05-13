@@ -24,10 +24,12 @@ There are more options you can specify:
 	"direction": "right|bottom",
 	// Directory relative to the .json file where source files are located, default "."
 	"dir": ".",
-	// Basename of the final sprite, default is same as the name of the .json file.
-	"sprite": "icons-sprite.png",
 	// List of source images (without directory, in PNG).
 	"files": ["icon1.png", "icon2.png"]
+	// Location and name of the final sprite, default is same as the .json file.
+	"sprite": "icons-sprite.png",
+	// Location and name of the final LESS file, default is same as the .json file.
+	"less": "../less/icon-sprite.less"
 }
 ```
 
