@@ -106,10 +106,6 @@ Sprites.prototype.writeStyles = function() {
 
 	for (var i = 0, l = this.files.length; i < l; i++) {
 		content += util.format(
-			'.sprite("%s", "%s", @_spriteDir) {\n\tbackground-image: url("@{_spriteDir}%s");\n\tbackground-position: %dpx %dpx;\n}\n',
-			sprite, this.files[i].name, spriteFile, x, y
-		);
-		content += util.format(
 			'.sprite("%s", @_spriteDir) {\n\tbackground-image: url("@{_spriteDir}%s");\n\tbackground-position: %dpx %dpx;\n}\n',
 			this.files[i].name, spriteFile, x, y
 		);
@@ -125,15 +121,6 @@ Sprites.prototype.writeStyles = function() {
 		'\t@spriteDir: `"@{path}".match(/^(.*\\/)([^\\/]*)$/)[1]`;\n' +
 		'\t@imgName: `"@{path}".match(/^(.*\\/)([^\\/]*)$/)[2]`;\n' +
 		'\t.sprite(@imgName, @spriteDir);\n' +
-		'}\n' +
-		'.sprite(\'sprite-img\', @_) {\n' +
-		'\t.sprite("sprite-img", @_);\n' +
-		'}\n' +
-		'.sprite("sprite-img", @_) {\n' +
-		'\t@path: e(@_);\n' +
-		'\t@spriteDir: `"@{path}".match(/^(.*\\/)([^\\/]*)$/)[1]`;\n' +
-		'\t@imgName: `"@{path}".match(/^(.*\\/)([^\\/]*)$/)[2]`;\n' +
-		'\t.sprite("sprite-img", @imgName, @spriteDir);\n' +
 		'}\n';
 
 	fs.writeFile(this.lessPath, content, function(err) {

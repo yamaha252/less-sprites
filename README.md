@@ -82,14 +82,5 @@ If you `@import` several sprites into global namespace there is a possibility of
 }
 ```
 
-Alternatively you can provide extra parameter to the `.sprite()` mixin with the name of the sprite.
-So if you have folder `icons/` with the sprite `icons/my-sprite.png`, then you can:
-```less
-@import "icons/my-sprite.less";
-.icon-first {
-	.sprite('my-sprite', 'img/icon1.png');
-}
-```
-
 ## License
 The MIT License.
