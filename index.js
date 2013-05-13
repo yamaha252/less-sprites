@@ -39,6 +39,7 @@ Sprites.prototype.createSprite = function(sourceDir, sourceFiles, spriteName) {
 
 	this.files = [];
 	this.spriteFile = im();
+	this.spriteFile.out('-background', 'none');
 
 	sourceFiles = this.getSourceFiles(sourceFiles);
 	if (!sourceFiles.length) {
